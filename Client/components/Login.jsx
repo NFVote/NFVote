@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 // import './Login.css';
 
 async function loginUser(credentials) {
- return await fetch('/login', {
+ return await fetch('/server/login', {
    method: 'POST',
    headers: {
      'Content-Type': 'application/json'
@@ -23,7 +23,6 @@ export default function Login() {
       username,
       password
     });
-    setToken(token);
   }
 
   return(
