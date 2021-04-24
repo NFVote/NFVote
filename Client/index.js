@@ -6,7 +6,7 @@ import styles from './scss/styles.scss';
 
 render(
   <BrowserRouter>
-    <App />,
+    <App />
   </BrowserRouter>,
   document.getElementById('root')
 );
