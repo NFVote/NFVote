@@ -3,11 +3,13 @@ const serverApp = express();
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const testRouter = express.Router();
+const cors = require('cors');
 
 
 serverApp.use(express.json());
 serverApp.use(express.urlencoded({ extended: true }));
 serverApp.use(cookieParser());
+serverApp.use(cors());
 
 
 serverApp.use((req, res, next) => {
@@ -24,10 +26,16 @@ const testObj = [
   {name: 'Lucy', age: 29}
 ];
 
-testRouter.get('/test', (req,res) => {
-  return res.status(200).send(testObj);
-})
-
+// testRouter.get('/test', (req,res) => {
+//   return res.status(200).send(testObj);
+// })
+app.post('/login', 
+  // userController.verifyUser,  
+  // cookieController.setSSIDCookie,
+  // sessionController.startSession,
+  (req, res) => {
+    res.redirect('../secret');
+  });
 
 
 

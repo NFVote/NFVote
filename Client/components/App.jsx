@@ -1,7 +1,7 @@
-const React = require('react');
+import React, { Component } from 'react';
+import Login from './Login.jsx';
 
-
-class App extends React.Component {
+class App extends Component {
     constructor(props){
         super(props);
     }
@@ -9,7 +9,8 @@ class App extends React.Component {
         return (
             <main>
                 <div className="AppComponent">
-                    <h1 className="header">Am I saying it right?</h1>
+                    <h1 className="header">NFVote</h1>
+                    <Login />
                 </div>
             </main>
         )
