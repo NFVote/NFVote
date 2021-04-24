@@ -1,12 +1,12 @@
 {
-  "name": "NFV",
+  "name": "nfv",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=production node server/server.js",
     "build": "NODE_ENV=production webpack",
-    "dev": "NODE_ENV=development webpack serve --open & NODE_ENV=development nodemon server/server.js"
+    "dev": "NODE_ENV=development webpack serve --open --hot & NODE_ENV=development nodemon server/server.js"
   },
   "babel": {
     "presets": [

@@ -1,4 +1,5 @@
 const React = require('react');
+import Login from './Login.jsx';
 
 
 class App extends React.Component {
@@ -10,6 +11,7 @@ class App extends React.Component {
             <main>
                 <div className="AppComponent">
                     <h1 className="header">Am I saying it right?</h1>
+                    <Login />
                 </div>
             </main>
         )
