@@ -1,16 +1,38 @@
+const cors = require('cors');
 const express = require('express');
-const serverApp = express();
+const app = express();
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const testRouter = express.Router();
+
+//require in the serverRouteStrings from the client
+const serverRouteStrings = {
+  SRV_Main: '/server',
+  SRV_Test: '/server/test',
+
+  SRV_UserAuth: '/server/userAuth',
+  SRV_UserAuth_SignUp: '/server/userAuth/signUp',
+  SRV_UserAuth_LogIn: '/server/userAuth/logIn',
+  // SRV_UserAuth_LogInFailed: SRV_UserAuth_LogInFailed,
+  // SRV_UserAuth_LogInSuccess: SRV_UserAuth_LogInSuccess,
+
+};
+// console.log(serverRouteStrings);
+
+//require in all necessary routers
+const testRouter = require('./routes/testRoutes.js');
+const userAuthRouter = require('./routes/userAuthRoutes.js');
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
+app.use(cookieParser());
+
+//connect external / auxiliary routers to the serverApp
+app.use(serverRouteStrings.SRV_Test, testRouter);
+app.use(serverRouteStrings.SRV_UserAuth, userAuthRouter);
 
 
-serverApp.use(express.json());
-serverApp.use(express.urlencoded({ extended: true }));
-serverApp.use(cookieParser());
-
-
-serverApp.use((req, res, next) => {
+app.use((req, res, next) => {
   console.log(`
   ***** FLOW TEST *****\n
   METHOD: ${req.method}\n
@@ -24,18 +46,27 @@ const testObj = [
   {name: 'Lucy', age: 29}
 ];
 
-testRouter.get('/test', (req,res) => {
+app.get('/test', (req,res) => {
   return res.status(200).send(testObj);
 })
 
+
+app.post('/login', (req, res) => {
+  console.log('server side here');
+  res.status(200).redirect();
+  // res.status(200).redirect('./..')
+});
+// userController.verifyUser,  
+// cookieController.setSSIDCookie,
+// sessionController.startSession,
 
 
 
 if (process.env.NODE_ENV === 'production'){
   //statically serve everything in the build folder on the route '/build'
-  serverApp.use('/build', express.static(path.join(__dirname,'../build')));
+  app.use('/build', express.static(path.join(__dirname,'../build')));
   //serve index.html on the route '/'
-  serverApp.get('/', (req,res) => {
+  app.get('/', (req,res) => {
     return res.status(200).sendFile(path.join(__dirname, '../index.html'));
   });
 }
@@ -43,20 +74,20 @@ if (process.env.NODE_ENV === 'production'){
 /**
  * 404 handler
  */
-serverApp.use('*', (req, res) => {
+app.use('*', (req, res) => {
   return res.status(404).send('********** GLOBAL BAD REQUEST / 404 ERROR **********');
 });
 
 /**
  * Global error handler
  */
-serverApp.use((err, req, res, next) => {
+app.use((err, req, res, next) => {
   console.log(err);
   return res.status(500).send('********** GLOBAL INTERNAL SERVER / 500 ERROR **********');
 });
 
 
 
-serverApp.listen(4000);
+app.listen(4000);
 
-module.exports = serverApp;
+module.exports = app;
