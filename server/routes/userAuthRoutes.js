@@ -23,7 +23,7 @@ userAuthRouter.post(
 
 
 userAuthRouter.post(
-  '/logIn',
+  '/login',
   userController.logIn,
   cookieController.setSSIDCookie,
   (req,res) => {
