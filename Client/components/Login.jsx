@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 // import './Login.css';
+import Questions from './Questions.jsx';
+import {
+  BrowserRouter,
+  Switch,
+  Route,
+  Link,
+  Redirect
+} from "react-router-dom";
 
 async function loginUser(credentials) {
  return await fetch('/server/login', {
@@ -16,15 +24,28 @@ async function loginUser(credentials) {
 export default function Login() {
   const [username, setUserName] = useState();
   const [password, setPassword] = useState();
+  const [redirect, setRedirect] = useState();
 
   const handleSubmit = async e => {
     e.preventDefault();
     const token = await loginUser({
       username,
       password
-    });
-  }
+    })
 
+    console.log('*********** sREDIRECT FRONT END HIT *************')
+    console.log(`token:`,token.logIn)
+    // console.log('data in logIn:', data);
+    setRedirect(token.logIn);
+    // {token.logIn ? render(<Redirect to="/questions" />) : console.log('NO_RENDER')}
+  }
+  if(redirect){
+    return <Redirect
+    to = {{
+      pathname: "/questions",
+    }}
+     />
+  }
   return(
     <div className="login-wrapper">
       <h1>Please Log In</h1>

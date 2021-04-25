@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 
 const useInput = init => {
@@ -12,19 +13,21 @@ const useInput = init => {
 };
 
 
-const QuestionsCreator = props => {
-  const [ instructions, instructionsOnChange ] = useInput('');
-  const [ instructionsError, setinstructionsError ] = useState(null);
-  
+const Questions = props => {
+  const [ question, questionOnChange ] = useInput('');
+  const [ questionError, setQuestionError ] = useState(null);
+  // const [cookies] = useCookies(['ssid'])
+  console.log(Cookies.get('ssid'));
   const saveSubject = () => {
     // check if name is empty
-    if (instructions === ''){
-      setinstructionsError('required');
+    if (question === ''){
+      setQuestionError('required');
     } else {
       const body = {
-        instructions,
+        question,
+        'ssid': Cookies.get('ssid')
       };
-      fetch('/server/WHATEVERWEDECIDEFORTHISCONTROLLER', {
+      fetch('/server/qPost', {
         method: 'POST',
         headers: {
           'Content-Type': 'Application/JSON'
@@ -41,8 +44,8 @@ const QuestionsCreator = props => {
 
   // >>> useEffect to clear nameError when `name` is changed <<<
   useEffect(()=>{
-    setinstructionsError(null);
-  }, [instructions]);
+    setQuestionError(null);
+  }, [question]);
 
 
 
@@ -59,12 +62,12 @@ const QuestionsCreator = props => {
 
         <h3>Start a new Subject?</h3>
 
-        {/* Instructions Input  */}
+        {/* question Input  */}
         <div className="createSubjectField">
-          <label htmlFor="instructions">Instructions: </label>
+          <label htmlFor="question">Question: </label>
           <br/>
-          <textarea rows="4" cols="50" name="instructions" placeholder="First steps..." value={instructions} onChange={instructionsOnChange} />
-          {instructionsError ? (<span className="errorMsg">{instructionsError}</span>) : null}
+          <textarea rows="4" cols="50" name="question" placeholder="First steps..." value={question} onChange={questionOnChange} />
+          {questionError ? (<span className="errorMsg">{questionError}</span>) : null}
         </div>
 
         {/* Submit Buttons  */}
@@ -76,7 +79,7 @@ const QuestionsCreator = props => {
             </button>
           </Link> */}
         </div>
-      
+
         <div className="questions-display-container">
 
         </div>
@@ -86,4 +89,4 @@ const QuestionsCreator = props => {
 }
 
 
-export default QuestionsCreator;
+export default withRouter(Questions);

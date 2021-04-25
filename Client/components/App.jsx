@@ -14,17 +14,17 @@ class App extends Component {
                 <div className="AppComponent">
                     <h1 className="header">NFVote</h1>
                     <Switch>
-                    <Route 
+                    <Route
                         exact
                         path="/"
                         component={() => <Login />}
                     />
-                    <Route 
+                    <Route
                         exact
                         path="/questions"
                         component={() => <Questions />}
                     />
-                    <Route 
+                    <Route
                         exact
                         path="/memo"
                         component={() => <Memo />}

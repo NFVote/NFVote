@@ -34,6 +34,15 @@ userAuthRouter.post(
 
 // userAuthRouter
 
+userAuthRouter.post(
+  '/qPost',
+  userController.addQuestion,
+  (req,res) => {
+    console.log('******* userAuthRouter qPost callback fired *******')
+    return res.status(200).json({qPost: true})
+  }
+)
+
 //add login route
 
 //add more toures below
