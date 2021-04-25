@@ -34,7 +34,24 @@ userAuthRouter.post(
 
 // userAuthRouter
 
-//add login route
+userAuthRouter.post(
+  '/qPost',
+  userController.addQuestion,
+  (req,res) => {
+    console.log('******* userAuthRouter qPost callback fired *******')
+    return res.status(200).json({qPost: true})
+  }
+)
+
+//get all questions routes
+userAuthRouter.get(
+  '/getQuestions',
+  userController.getQuestions,
+  (req,res) => {
+    console.log('***Questions middleware executed and responded***')
+    return res.status(200).json(res.locals)
+  }
+)
 
 //add more toures below
 
