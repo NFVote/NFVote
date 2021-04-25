@@ -80,14 +80,14 @@ userController.addQuestion = (req, res, next) => {
     }
   })
   const insertQString = `INSERT INTO nfquest (userhash, questions, votefor, voteagainst, date_asked, majority)
-                          VALUES ($1, $2, 0,0,$3, FALSE)`
+                          VALUES ($1, $2, 0,0,$3, FALSE)`;
   //query to post question if previous query response is valid
+  shouldPost=true;
   if(shouldPost) {
     db.query(insertQString, validateUserValues, (err, data) => {
       console.log('*******IN SHOULD POST DB QUERY ********')
       console.log(data)
       console.log(err)
-      return res.status(200).json('Question posted')
     })
   }
   return next();
