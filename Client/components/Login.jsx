@@ -33,8 +33,8 @@ export default function Login() {
       password
     })
 
-    console.log('*********** sREDIRECT FRONT END HIT *************')
-    console.log(`token:`,token.logIn)
+    // console.log('*********** sREDIRECT FRONT END HIT *************')
+    // console.log(`token:`,token.logIn)
     // console.log('data in logIn:', data);
     setRedirect(token.logIn);
     // {token.logIn ? render(<Redirect to="/questions" />) : console.log('NO_RENDER')}

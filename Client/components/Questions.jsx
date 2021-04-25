@@ -16,6 +16,7 @@ const useInput = init => {
 const Questions = props => {
   const [ question, questionOnChange ] = useInput('');
   const [ questionError, setQuestionError ] = useState(null);
+  const [ questionArray, setQuestionArray ] = useState([]);
   // const [cookies] = useCookies(['ssid'])
   console.log(Cookies.get('ssid'));
   const saveSubject = () => {
@@ -53,8 +54,9 @@ const Questions = props => {
       .then(data => {
           questionsResponse = data;
           for (let i=0; i<questionsResponse.length; i+=1){
-            questions.push(<IndividualQuestion question={questionsResponse[i].question}/>);
-            // questions.push(questionsResponse[i].question)
+            console.log(questionsResponse[i].questions)
+            questions.push(<IndividualQuestion question={questionsResponse[i].questions}/>);
+            // questions.push(questionsResponse[i].questions)
           }
           return questions;
       })
@@ -65,8 +67,9 @@ const Questions = props => {
   // >>> useEffect to clear nameError when `name` is changed <<<
   useEffect(()=>{
     setQuestionError(null);
+    console.log(questions)
+    setQuestionArray(questions);
   }, [question]);
-
 
   return(
     <section id='subject-creator'>
@@ -98,7 +101,7 @@ const Questions = props => {
       <div>
         placeholder for questions
 
-        {questions}
+        {() => questions}
       </div>
 
     </section>
