@@ -7,9 +7,12 @@ class IndividualQuestion extends Component {
         super(props)
     }
     render(){
-        console.log('rendering individual q', props)
+    //     const { questions } = this.props.question;
+        console.log('rendering individual q', this.props)
         return(
-            <div className = "memoizedQuestion">{this.props.question}</div>
+            <div className = "qList">
+                {this.props.question}
+            </div>
         )
 
     }
