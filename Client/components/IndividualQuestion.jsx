@@ -8,7 +8,7 @@ class IndividualQuestion extends Component {
     }
     render(){
     //     const { questions } = this.props.question;
-        console.log('rendering individual q', props)
+        console.log('rendering individual q', this.props)
         return(
             <div className = "qList">
                 {this.props.question}

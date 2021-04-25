@@ -13,19 +13,30 @@ const useInput = init => {
 };
 
 
-const Questions = props => {
-  const [ question, questionOnChange ] = useInput('');
-  const [ questionError, setQuestionError ] = useState(null);
-  const [ questionArray, setQuestionArray ] = useState([]);
+class Questions extends React.Component{
+  constructor(props){
+    super(props)
+    this.state = {
+      question: '',
+      questionError: null,
+      questionArray: [],
+    }
+    this.saveSubject = this.saveSubject.bind(this);
+    this.fetchQuestions = this.fetchQuestions.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+  // const [ question, questionOnChange ] = useInput('');
+  // const [ questionError, setQuestionError ] = useState(null);
+  // const [ questionArray, setQuestionArray ] = useState([]);
   // const [cookies] = useCookies(['ssid'])
-  console.log(Cookies.get('ssid'));
-  const saveSubject = () => {
+  // console.log(Cookies.get('ssid'));
+  saveSubject (){
     // check if name is empty
-    if (question === ''){
+    if (this.state.question === ''){
       setQuestionError('required');
     } else {
       const body = {
-        question,
+        'question': this.state.question,
         'ssid': Cookies.get('ssid')
       };
       fetch('/server/qPost', {
@@ -43,10 +54,16 @@ const Questions = props => {
     }
   };
 
+  handleChange(event) {
+    event.preventDefault();
+    this.setState({question: event.target.value});
+  }
+
   //get questions from the database and store them into local array holding individual question components
-  let questionsResponse = [];
-  let questions = [];
-  const fetchQuestions = async () => {
+  async fetchQuestions () {
+    console.log('doing fetch questions request')
+    let questionsResponse = [];
+    let questions = [];
     await fetch('/server/getQuestions', {
       method: 'GET',
     })
@@ -54,58 +71,65 @@ const Questions = props => {
       .then(data => {
           questionsResponse = data;
           for (let i=0; i<questionsResponse.length; i+=1){
-            console.log(questionsResponse[i].questions)
             questions.push(<IndividualQuestion question={questionsResponse[i].questions}/>);
             // questions.push(questionsResponse[i].questions)
           }
+          this.setState({questionArray: questions})
           return questions;
       })
       .catch(err => console.log('getQuestions failed, error:', err))
   }
-  const QUESTIONS = fetchQuestions();
-  console.log(`OUTPUT QUESTIONS:`,questions)
+  // const QUESTIONS = fetchQuestions();
+  // console.log(`FETCH QUESTIONS:`,questions)
   // >>> useEffect to clear nameError when `name` is changed <<<
-  useEffect(()=>{
-    setQuestionError(null);
-    console.log(questions)
-    setQuestionArray(questions);
-  }, [question]);
+  // useEffect(()=>{
+  //   setQuestionError(null);
+  //   console.log(questions)
+  //   setQuestionArray(questions);
+  // }, [question]);
+  componentDidMount(){
+    this.fetchQuestions();
+  }
 
-  return(
-    <section id='subject-creator'>
+  render (){
+    console.log('questionArray:',this.state.questionArray);
+    return(
+      <section id='subject-creator'>
 
-      <h3>Start a new Subject?</h3>
+        <h3>Start a new Subject?</h3>
 
-      {/* question Input  */}
-      <div className="createSubjectField">
-        <label htmlFor="question">Question: </label>
-        <br/>
-        <textarea rows="4" cols="50" name="question" placeholder="First steps..." value={question} onChange={questionOnChange} />
-        {questionError ? (<span className="errorMsg">{questionError}</span>) : null}
-      </div>
+        {/* question Input  */}
+        <div className="createSubjectField">
+          <label htmlFor="question">Question: </label>
+          <br/>
+          <textarea rows="4" cols="50" name="question" placeholder="First steps..." value={this.state.question} onChange={this.handleChange} />
+          {this.state.questionError ? (<span className="errorMsg">{this.state.questionError}</span>) : null}
+        </div>
 
-      {/* Submit Buttons  */}
-      <div className="createSubContainer">
-        <button type="button" className="btnMain" onClick={saveSubject}>Save</button>
-        {/* <Link to="/" className="backLink">
-          <button type="button" className="btnSecondary">
-            Cancel
-          </button>
-        </Link> */}
-      </div>
+        {/* Submit Buttons  */}
+        <div className="createSubContainer">
+          <button type="button" className="btnMain" onClick={this.saveSubject}>Save</button>
+          {/* <Link to="/" className="backLink">
+            <button type="button" className="btnSecondary">
+              Cancel
+            </button>
+          </Link> */}
+        </div>
 
-      <div className="questions-display-container">
+        <div className="questions-display-container">
 
-      </div>
+        </div>
 
-      <div>
-        placeholder for questions
+        <div>
+          {this.state.questionArray}
+        </div>
 
-        {() => questions}
-      </div>
+      </section>
+    )
+  }
 
-    </section>
-  )
+
+
 }
 
 
