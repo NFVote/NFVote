@@ -80,9 +80,9 @@ userController.addQuestion = (req, res, next) => {
     }
   })
   const insertQString = `INSERT INTO nfquest (userhash, questions, votefor, voteagainst, date_asked, majority)
-                          VALUES ($1, $2, 0,0,$3, FALSE)`;
+                          VALUES ($1, $2, 0, 0, $3, FALSE)`;
   //query to post question if previous query response is valid
-  shouldPost=true;
+  // shouldPost=true;
   if(shouldPost) {
     db.query(insertQString, validateUserValues, (err, data) => {
       console.log('*******IN SHOULD POST DB QUERY ********')
@@ -92,6 +92,18 @@ userController.addQuestion = (req, res, next) => {
   }
   return next();
 }
+
+userController.getQuestions = (req, res, next) => {
+  const getQuestionsQuery = 'SELECT * FROM nfquest';
+  // const getQuestionsValues = [Date.now()];
+  db.query(getQuestionsQuery)
+    .then((data) => {
+      res.locals = data.rows;
+    })
+    .then(() => next());
+
+}
+
 
 //export the userController module
 module.exports = userController;

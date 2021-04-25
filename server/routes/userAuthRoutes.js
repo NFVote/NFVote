@@ -43,7 +43,15 @@ userAuthRouter.post(
   }
 )
 
-//add login route
+//get all questions routes
+userAuthRouter.get(
+  '/getQuestions',
+  userController.getQuestions,
+  (req,res) => {
+    console.log('***Questions middleware executed and responded***')
+    return res.status(200).json(res.locals)
+  }
+)
 
 //add more toures below
 

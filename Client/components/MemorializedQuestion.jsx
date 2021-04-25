@@ -9,11 +9,11 @@ class MemorializedQuestion extends Component {
 
     render(){
         return(
-            <div className = "memoizedQuestion">{this.props}</div>     
+            <div className = "memoizedQuestion">{this.props}</div>
         )
 
     }
-    
+
 }
 
 export default MemorializedQuestion;

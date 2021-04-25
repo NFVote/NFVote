@@ -25,7 +25,7 @@ class Memo extends Component {
             this.setState({
                 memoQuestions: arr
             })
-        
+
         })
     }
 
@@ -43,7 +43,7 @@ class Memo extends Component {
             </div>
         );
     }
-    
+
 }
 
 export default Memo;
