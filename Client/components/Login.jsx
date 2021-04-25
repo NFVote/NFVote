@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-// import './Login.css';
+
 
 async function loginUser(credentials) {
- return await fetch('/server/login', {
+ return fetch('/server/login', {
    method: 'POST',
    headers: {
      'Content-Type': 'application/json'
@@ -44,3 +44,6 @@ export default function Login() {
     </div>
   )
 }
+
+
+// export default Login;
