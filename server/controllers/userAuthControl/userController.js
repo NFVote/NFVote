@@ -110,6 +110,20 @@ userController.getQuestions = (req, res, next) => {
 }
 
 
+userController.getOneQuestion = (req, res, next) => {
+  const getQuestionsQuery = 'SELECT * FROM nfquest WHERE date_asked > $1 AND questions = $2';
+  const getQuestionsValues = [Date.now() - (86400 * 1000), req.body.question];
+  console.log('getting questions after this millisecond' + getQuestionsValues)
+  // 1619390127991
+  db.query(getQuestionsQuery, getQuestionsValues)
+    .then((data) => {
+      res.locals = data.rows;
+    })
+    .then(() => next());
+
+}
+
+
 userController.getMemoQuestions = (req, res, next) => {
   const getQuestionsQuery = 'SELECT * FROM nfquest WHERE majority = True';
   db.query(getQuestionsQuery)

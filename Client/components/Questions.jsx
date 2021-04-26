@@ -12,7 +12,7 @@ const useInput = init => {
   return [ value, onChange ];
 };
 
-const IPFS = `https://gateway.pinata.cloud/ipfs/QmXNdSdGYoicuds86wnkArHq3pAfCseSLNYHio61fFeYm4`;
+const IPFS = `https://gateway.pinata.cloud/ipfs/QmPBJAGR82jiRUCzuannkFqmkwWPQtHufYKsNi7fUxd57P`;
 let IPFS_DATA = {};
 
 
@@ -107,7 +107,7 @@ class Questions extends React.Component{
       .then((data) => {
         IPFS_DATA = data;
         console.log("***** NFT META DATA *****");
-        console.log(data);
+        console.log('IPFS_DATA',IPFS_DATA);
       })
       .catch((err) => console.log(err));
   }
@@ -123,6 +123,7 @@ class Questions extends React.Component{
     return(
       <section id='subject-creator'>
         <h3>Start a new Subject?</h3>
+        <div>{IPFS_DATA.voteSecret}</div>
 
         {/* question Input  */}
         <div className="createSubjectField">

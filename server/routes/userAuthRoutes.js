@@ -56,6 +56,16 @@ userAuthRouter.get(
 )
 
 
+userAuthRouter.post(
+  '/getOneQuestion',
+  userController.getOneQuestion,
+  (req,res) => {
+    // console.log('***Questions middleware executed and responded***')
+    return res.status(200).json(res.locals)
+  }
+)
+
+
 //get all questions routes
 userAuthRouter.get(
   '/memoquestions',

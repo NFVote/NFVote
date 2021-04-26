@@ -33,20 +33,23 @@ class IndividualQuestion extends Component {
 			// }
 	}
 
-	sendVote(vote){
+	async sendVote(vote){
 		const body = {
 			'vote': vote,
 			'question': this.props.question,
 			'ssid': this.props.ssid
 		};
 		// console.log(body)
-		fetch((`/server/voteChange`),{
-			method: 'POST',
-			headers: {
-				'Content-Type': 'Application/JSON'
-			},
-			body: JSON.stringify(body)
+		const sending = await fetch((`/server/voteChange`),{ method: 'POST', headers: { 'Content-Type': 'Application/JSON' }, body: JSON.stringify(body) });
+
+		await fetch('/server/getOneQuestion', { method: 'POST', headers: { 'Content-Type': 'Application/JSON' }, body: JSON.stringify(body) })
+		.then(resp => resp.json()).then(data => {
+			this.setState({
+				upvotes: data.rows[0].votefor,
+				downvotes: data.rows[0].voteagainst
+			})
 		})
+		return sending;
 	}
 
 	render(){
