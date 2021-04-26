@@ -2,7 +2,7 @@
 
 const { Pool } = require('pg');
 
-//replace this with your own postGres URI string
+//replace this with your own postGres URI string from Jake
 const PG_URI = 'postgres://crszorok:K1D4F4tJ9EFp-FW2HXOLsVobjnyzWj4Y@queenie.db.elephantsql.com:5432/crszorok';
 
 
