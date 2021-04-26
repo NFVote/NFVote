@@ -15,23 +15,22 @@ class IndividualQuestion extends Component {
 
 	upvoteFunc(){
 		// fetch('/server/vote')
-		if (this.state.hasVoted = false){
+		// if (this.state.hasVoted = false){
 			this.sendVote(1)//to yay column
-			this.setState({
-				hasVoted: true
-			})
-		}
+			// this.setState({
+			// 	hasVoted: true
+			// })
 	}
 	
 	downvoteFunc(){
 		// fetch('/server/vote')   
 			this.sendVote(0)//to nay column
-			if (this.state.hasVoted = false){
-				this.sendVote(1)//to yay column
-				this.setState({
-					hasVoted: true
-				})
-			}
+			// if (this.state.hasVoted = false){
+			// 	this.sendVote(1)//to yay column
+			// 	this.setState({
+			// 		hasVoted: true
+			// 	})
+			// }
 	}
 
 	sendVote(vote){

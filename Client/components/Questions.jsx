@@ -115,7 +115,7 @@ class Questions extends React.Component{
         <Link to="/memo"><button id="memoRouter" type="button">Memorialized Questions</button></Link>
         {/* Submit Buttons  */}
         <div className="createSubContainer">
-          <button type="button" className="btnMain" onClick={this.fetchQuestions}>Save</button>
+          <button type="button" className="btnMain" onClick={this.saveSubject}>Save</button>
           {/* <Link to="/" className="backLink">
             <button type="button" className="btnSecondary">
               Cancel
