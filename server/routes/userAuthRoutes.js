@@ -28,7 +28,7 @@ userAuthRouter.post(
   userController.logIn,
   cookieController.setSSIDCookie,
   (req,res) => {
-    console.log('userAuthRouter login callback fired')
+    // console.log('userAuthRouter login callback fired')
     return res.status(200).json({logIn: true});
   }
 )
@@ -39,7 +39,7 @@ userAuthRouter.post(
   '/qPost',
   userController.addQuestion,
   (req,res) => {
-    console.log('******* userAuthRouter qPost callback fired *******')
+    // console.log('******* userAuthRouter qPost callback fired *******')
     return res.status(200).json({qPost: true})
   }
 )
@@ -50,7 +50,7 @@ userAuthRouter.get(
   '/getQuestions',
   userController.getQuestions,
   (req,res) => {
-    console.log('***Questions middleware executed and responded***')
+    // console.log('***Questions middleware executed and responded***')
     return res.status(200).json(res.locals)
   }
 )
@@ -61,7 +61,7 @@ userAuthRouter.get(
   '/memoquestions',
   userController.getMemoQuestions,
   (req,res) => {
-    console.log('***Questions middleware executed and responded***')
+    // console.log('***Questions middleware executed and responded***')
     return res.status(200).json(res.locals)
   }
 )
@@ -69,9 +69,10 @@ userAuthRouter.get(
 
 userAuthRouter.post(
   '/voteChange',
+  userController.insertHistory,
   userController.recordVote,
   (req,res) => {
-    console.log('*** VOTE RECORDERD ***');
+    // console.log('*** VOTE RECORDERD ***');
     return res.status(200).json({voteRecorded: true});
   }
 )

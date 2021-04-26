@@ -36,7 +36,8 @@ class IndividualQuestion extends Component {
 	sendVote(vote){
 		const body = {
 			'vote': vote,
-			'question': this.props.question
+			'question': this.props.question,
+			'ssid': this.props.ssid
 		};
 		// console.log(body)
 		fetch((`/server/voteChange`),{
@@ -50,22 +51,27 @@ class IndividualQuestion extends Component {
 
 	render(){
 	//     const { questions } = this.props.question;
-		console.log('rendering individual q', this.props)
+		// console.log('rendering individual q', this.props)
+		const { upvotes } = this.props;
+		const { downvotes } = this.props;
 		return(
 			<div className = "qContainer">
+				{/* Questions */}
 					{this.props.question}
 					
-						{/* <br>{"\n"}</br> */}
 
+				{/* Votes */}
+				<div className="votes-container">
 					<div>
-							{this.props.upvotes}
+							{upvotes}
 							<button className="voteBtn" onClick={this.upvoteFunc.bind(this)}>Upvote</button>
 					</div>
 					<div>
-							{this.props.downvotes}
+							{downvotes}
 							<button className="voteBtn" onClick={this.downvoteFunc.bind(this)}>Downvote</button>
 					</div>
-						{/* <br>{"\n"}</br> */}
+				</div>
+
 			</div>
 		)
 

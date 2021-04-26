@@ -12,6 +12,11 @@ const useInput = init => {
   return [ value, onChange ];
 };
 
+const IPFS = `https://gateway.pinata.cloud/ipfs/QmXNdSdGYoicuds86wnkArHq3pAfCseSLNYHio61fFeYm4`;
+let IPFS_DATA = {};
+
+
+
 
 class Questions extends React.Component{
   constructor(props){
@@ -24,6 +29,7 @@ class Questions extends React.Component{
     this.saveSubject = this.saveSubject.bind(this);
     this.fetchQuestions = this.fetchQuestions.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.getNFVoteSecret = this.getNFVoteSecret.bind(this);
   }
   // const [ question, questionOnChange ] = useInput('');
   // const [ questionError, setQuestionError ] = useState(null);
@@ -48,7 +54,7 @@ class Questions extends React.Component{
       })
         .then(resp => resp.json())
         .then(data => {
-          console.log(data);
+          // console.log(data);
         })
         .catch(err => console.log(' ERROR: ', err));
     }
@@ -62,7 +68,7 @@ class Questions extends React.Component{
 
   //get questions from the database and store them into local array holding individual question components
   async fetchQuestions () {
-    console.log('doing fetch questions request')
+    // console.log('doing fetch questions request')
     let questionsResponse = [];
     let questions = [];
     await fetch('/server/getQuestions', {
@@ -71,7 +77,10 @@ class Questions extends React.Component{
       .then(resp => resp.json())
       .then(data => {
           questionsResponse = data;
-          console.log(questionsResponse[0])
+          // console.log(questionsResponse[0])
+          questionsResponse.sort((a, b) => {
+            return a.date_asked - b.date_asked
+          })
           for (let i=0; i<questionsResponse.length; i+=1){
             questions.push(<IndividualQuestion 
               question={questionsResponse[i].questions} 
@@ -86,23 +95,33 @@ class Questions extends React.Component{
       })
       .catch(err => console.log('getQuestions failed, error:', err))
   }
-  // const QUESTIONS = fetchQuestions();
-  // console.log(`FETCH QUESTIONS:`,questions)
-  // >>> useEffect to clear nameError when `name` is changed <<<
-  // useEffect(()=>{
-  //   setQuestionError(null);
-  //   console.log(questions)
-  //   setQuestionArray(questions);
-  // }, [question]);
+
+  async getNFVoteSecret(IPFS) {
+    return await fetch(IPFS, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((data) => data.json())
+      .then((data) => {
+        IPFS_DATA = data;
+        console.log("***** NFT META DATA *****");
+        console.log(data);
+      })
+      .catch((err) => console.log(err));
+  }
+
+
   componentDidMount(){
     this.fetchQuestions();
+    this.getNFVoteSecret(IPFS);
   }
 
   render (){
-    console.log('questionArray:',this.state.questionArray);
+    // console.log('questionArray:',this.state.questionArray);
     return(
       <section id='subject-creator'>
-
         <h3>Start a new Subject?</h3>
 
         {/* question Input  */}
@@ -112,7 +131,10 @@ class Questions extends React.Component{
           <textarea rows="4" cols="50" name="question" placeholder="First steps..." value={this.state.question} onChange={this.handleChange} />
           {this.state.questionError ? (<span className="errorMsg">{this.state.questionError}</span>) : null}
         </div>
+
+        {/* Memorialized Button */}
         <Link to="/memo"><button id="memoRouter" type="button">Memorialized Questions</button></Link>
+
         {/* Submit Buttons  */}
         <div className="createSubContainer">
           <button type="button" className="btnMain" onClick={this.saveSubject}>Save</button>
@@ -124,12 +146,9 @@ class Questions extends React.Component{
         </div>
 
         <div className="questions-display-container">
-
-        </div>
-
-        <div>
           {this.state.questionArray}
         </div>
+
 
       </section>
     )
