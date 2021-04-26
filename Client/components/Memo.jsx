@@ -17,9 +17,10 @@ class Memo extends Component {
         .then((res) => res.json())
         .then((response) => {
             //setstate to response from the request
+            console.log('client side response for memo qs' + response)
             const arr = []
             response.forEach(e => {
-                if (e.memoized) {
+                if (e.majority) {
                     arr.push(e);
                 }
             })
@@ -28,6 +29,7 @@ class Memo extends Component {
             })
 
         })
+        .catch(err => console.log(`Error when fetching the memo: ${err}`))
     }
 
 
@@ -39,8 +41,17 @@ class Memo extends Component {
         }
 
         return(
-            <div className='memoQuestionBox'>
-            {memoquestions}
+            <div>
+                {/* Link back to questions */}
+                <div>
+                    <Link to="/questions"><button id="questionsRouter" type="button">Questions</button></Link>
+                </div>
+
+                {/* Memorialized questions */}
+                <div className='memoQuestionBox'>
+                    {memoquestions}
+                </div>
+                
             </div>
         );
     }

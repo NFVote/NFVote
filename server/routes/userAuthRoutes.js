@@ -59,7 +59,7 @@ userAuthRouter.get(
 //get all questions routes
 userAuthRouter.get(
   '/memoquestions',
-  userController.getQuestions,
+  userController.getMemoQuestions,
   (req,res) => {
     console.log('***Questions middleware executed and responded***')
     return res.status(200).json(res.locals)

@@ -31,6 +31,7 @@ userController.signUp = (req, res, next) => {
     }))
 }
 
+
 userController.logIn = (req, res, next) => {
 
   // console.log('userController.logIn', req.body);
@@ -94,6 +95,7 @@ userController.addQuestion = (req, res, next) => {
   return next();
 }
 
+
 userController.getQuestions = (req, res, next) => {
   const getQuestionsQuery = 'SELECT * FROM nfquest WHERE date_asked > $1';
   const getQuestionsValues = [Date.now() - (86400 * 1000)];
@@ -107,6 +109,20 @@ userController.getQuestions = (req, res, next) => {
 
 }
 
+
+userController.getMemoQuestions = (req, res, next) => {
+  const getQuestionsQuery = 'SELECT * FROM nfquest WHERE majority = True';
+  db.query(getQuestionsQuery)
+    .then((data) => {
+      res.locals = data.rows;
+      console.log(res.locals)
+      console.log('data response from sql' + data.rows)
+    })
+    .then(() => next());
+
+}
+
+
 userController.recordVote = async (req, res, next) => {
   console.log('************RECORD VOTE*****************')
   
@@ -119,30 +135,29 @@ userController.recordVote = async (req, res, next) => {
   const checkQString = `SELECT * FROM nfquest WHERE questions = $1`;
   await db.query(checkQString, questCheck)
     .then((data) => {
-      // console.log(data.rows);
-      // console.log(data.rows[0].date_asked);
-      // console.log(Date.now());
-      // console.log((data.rows[0].date_asked*1000 + (86400*1000)) < Date.now());
+
       queriedData = data.rows[0];
-      // return queriedData;
     })
   
-  console.log(`*****Quereied Data:`, queriedData);
 
-  
+  console.log(`***** Record Vote Quereied Data:`, queriedData);
+
   
   let updateVoteString = ``;
   let voteValues = [];
   let newVote;
+  let majority = false;
   // console.log(queriedData)
   if (inputVote ===1) {
-    updateVoteString = `UPDATE nfquest SET votefor = $1 WHERE questions = $2`;
+    updateVoteString = `UPDATE nfquest SET votefor = $1, majority = $3 WHERE questions = $2`;
     newVote = queriedData.votefor+1;
-    voteValues = [newVote ,question];
+    majority = newVote > 3 ? true : false;
+    voteValues = [newVote, question, majority];
   } else {
-    updateVoteString = `UPDATE nfquest SET voteagainst = $1 WHERE questions = $2`;
+    updateVoteString = `UPDATE nfquest SET voteagainst = $1, majority = $3 WHERE questions = $2`;
     newVote = queriedData.voteagainst+1;
-    voteValues = [newVote ,question];
+    majority = newVote > 3 ? true : false;
+    voteValues = [newVote ,question, majority];
   }; 
 
   db.query(updateVoteString, voteValues, (err,data) => {

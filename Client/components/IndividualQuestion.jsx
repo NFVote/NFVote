@@ -5,6 +5,9 @@ import React, { useState } from 'react';
 class IndividualQuestion extends Component {
 	constructor(props) {
 		super(props)
+		this.state = {
+			hasVoted: false
+		}
 		this.upvoteFunc = this.upvoteFunc.bind(this)
 		this.downvoteFunc = this.downvoteFunc.bind(this)
 		this.sendVote = this.sendVote.bind(this)
@@ -12,12 +15,23 @@ class IndividualQuestion extends Component {
 
 	upvoteFunc(){
 		// fetch('/server/vote')
+		if (this.state.hasVoted = false){
 			this.sendVote(1)//to yay column
+			this.setState({
+				hasVoted: true
+			})
+		}
 	}
 	
 	downvoteFunc(){
 		// fetch('/server/vote')   
 			this.sendVote(0)//to nay column
+			if (this.state.hasVoted = false){
+				this.sendVote(1)//to yay column
+				this.setState({
+					hasVoted: true
+				})
+			}
 	}
 
 	sendVote(vote){
