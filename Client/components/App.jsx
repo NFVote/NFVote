@@ -12,7 +12,7 @@ class App extends Component {
         return (
             <main>
                 <div className="AppComponent">
-                    <h1 className="header">NFVote</h1>
+                    {/* <h1 className="header">NFVote</h1> */}
                     <Switch>
                     <Route
                         exact

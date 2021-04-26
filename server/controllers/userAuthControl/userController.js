@@ -59,7 +59,7 @@ userController.logIn = (req, res, next) => {
 
 }
 
-userController.addQuestion = (req, res, next) => {
+userController.addQuestion = async (req, res, next) => {
   //get the user info from the body
   //query to check if user hash and date are valid
   const valueSSID = [req.body.ssid]
@@ -71,12 +71,13 @@ userController.addQuestion = (req, res, next) => {
       SELECT MAX(date_asked)
       FROM nfquest
   )`
-  db.query(validateUserQuery, valueSSID, (err, data) => {
+  await db.query(validateUserQuery, valueSSID)
+  .then((data) => {
     // console.log(data.rows);
     // console.log(data.rows[0].date_asked);
     // console.log(Date.now());
     // console.log((data.rows[0].date_asked*1000 + (86400*1000)) < Date.now());
-    if((data.rows[0].date_asked + (86400 * 1000)) < Date.now()){
+    if((!data.rows[0] || data.rows[0].date_asked + (86400 * 1000)) < Date.now()){
       console.log('flagging valid questions')
       shouldPost = true;
     }
@@ -85,7 +86,9 @@ userController.addQuestion = (req, res, next) => {
                           VALUES ($1, $2, 0, 0, $3, FALSE)`;
   //query to post question if previous query response is valid
   // shouldPost=true;
+  console.log(shouldPost)
   if(shouldPost) {
+    console.log('flagging shouldPost')
     db.query(insertQString, validateUserValues, (err, data) => {
       // console.log('*******IN SHOULD POST DB QUERY ********')
       // console.log(data)
