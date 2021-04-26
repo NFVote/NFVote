@@ -71,8 +71,14 @@ class Questions extends React.Component{
       .then(resp => resp.json())
       .then(data => {
           questionsResponse = data;
+          console.log(questionsResponse[0])
           for (let i=0; i<questionsResponse.length; i+=1){
-            questions.push(<IndividualQuestion question={questionsResponse[i].questions} ssid={Cookies.get('ssid')}/>);
+            questions.push(<IndividualQuestion 
+              question={questionsResponse[i].questions} 
+              upvotes={questionsResponse[i].votefor}
+              downvotes={questionsResponse[i].voteagainst}
+              ssid={Cookies.get('ssid')}/>
+              );
             // questions.push(questionsResponse[i].questions)
           }
           this.setState({questionArray: questions})
@@ -80,6 +86,8 @@ class Questions extends React.Component{
       })
       .catch(err => console.log('getQuestions failed, error:', err))
   }
+
+
   // const QUESTIONS = fetchQuestions();
   // console.log(`FETCH QUESTIONS:`,questions)
   // >>> useEffect to clear nameError when `name` is changed <<<
@@ -96,7 +104,6 @@ class Questions extends React.Component{
     console.log('questionArray:',this.state.questionArray);
     return(
       <section id='subject-creator'>
-
         <h3>Start a new Subject?</h3>
 
         {/* question Input  */}
@@ -106,10 +113,13 @@ class Questions extends React.Component{
           <textarea rows="4" cols="50" name="question" placeholder="First steps..." value={this.state.question} onChange={this.handleChange} />
           {this.state.questionError ? (<span className="errorMsg">{this.state.questionError}</span>) : null}
         </div>
+
+        {/* Memorialized Button */}
         <Link to="/memo"><button id="memoRouter" type="button">Memorialized Questions</button></Link>
+
         {/* Submit Buttons  */}
         <div className="createSubContainer">
-          <button type="button" className="btnMain" onClick={this.fetchQuestions}>Save</button>
+          <button type="button" className="btnMain" onClick={this.saveSubject}>Save</button>
           {/* <Link to="/" className="backLink">
             <button type="button" className="btnSecondary">
               Cancel
@@ -118,12 +128,12 @@ class Questions extends React.Component{
         </div>
 
         <div className="questions-display-container">
-
-        </div>
-
-        <div>
           {this.state.questionArray}
         </div>
+
+        {/* <div>
+          {this.state.questionArray}
+        </div> */}
 
       </section>
     )
