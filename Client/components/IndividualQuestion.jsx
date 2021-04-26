@@ -13,6 +13,7 @@ class IndividualQuestion extends Component {
 		this.upvoteFunc = this.upvoteFunc.bind(this)
 		this.downvoteFunc = this.downvoteFunc.bind(this)
 		this.sendVote = this.sendVote.bind(this)
+		this.refresh = this.refresh.bind(this)
 	}
 
 	upvoteFunc(){
@@ -22,6 +23,7 @@ class IndividualQuestion extends Component {
 			// this.setState({
 			// 	hasVoted: true
 			// })
+			// this.refresh();
 	}
 	
 	downvoteFunc(){
@@ -33,6 +35,7 @@ class IndividualQuestion extends Component {
 			// 		hasVoted: true
 			// 	})
 			// }
+			// this.refresh();
 	}
 
 	async sendVote(vote){
@@ -41,24 +44,38 @@ class IndividualQuestion extends Component {
 			'question': this.props.question,
 			'ssid': this.props.ssid
 		};
-		// console.log(body)
+		// console.log('sendVote function: ' + body)
 		const sending = await fetch((`/server/voteChange`),{ method: 'POST', headers: { 'Content-Type': 'Application/JSON' }, body: JSON.stringify(body) });
-
-		await fetch('/server/getOneQuestion', { method: 'POST', headers: { 'Content-Type': 'Application/JSON' }, body: JSON.stringify(body) })
-		.then(resp => resp.json()).then(data => {
-			this.setState({
-				upvotes: data.rows[0].votefor,
-				downvotes: data.rows[0].voteagainst
-			})
-		})
 		return sending;
 	}
+
+
+	async refresh() {
+		const newUpvote = [];
+		const newDownvote = [];
+		const body = {
+			'question': this.props.question,
+			'ssid': this.props.ssid
+		};
+		await fetch('/server/getOneQuestion', { method: 'POST', headers: { 'Content-Type': 'Application/JSON' }, body: JSON.stringify(body) })
+		.then(resp => resp.json()).then(data => {
+
+			console.log('data from update vote fetch req', data)
+			this.setState({
+				upvotes: data.votefor,
+				downvotes: data.voteagainst
+			})
+		})
+
+	}
+
+
 
 	render(){
 	//     const { questions } = this.props.question;
 		// console.log('rendering individual q', this.props)
-		const { upvotes } = this.props;
-		const { downvotes } = this.props;
+		// const { upvotes } = this.state;
+		// const { downvotes } = this.state;
 		return(
 			<div className = "qContainer">
 				{/* Questions */}
@@ -68,12 +85,18 @@ class IndividualQuestion extends Component {
 				{/* Votes */}
 				<div className="votes-container">
 					<div>
-							{upvotes}
-							<button className="voteBtn" onClick={this.upvoteFunc.bind(this)}>Upvote</button>
+							{this.state.upvotes}
+							<button className="voteBtn" onClick={() => {
+												this.upvoteFunc();
+												this.refresh();
+												}}>Upvote</button>
 					</div>
 					<div>
-							{downvotes}
-							<button className="voteBtn" onClick={this.downvoteFunc.bind(this)}>Downvote</button>
+							{this.state.downvotes}
+							<button className="voteBtn" onClick={() => {
+												this.downvoteFunc();
+												this.refresh();
+												}}>Downvote</button>
 					</div>
 				</div>
 

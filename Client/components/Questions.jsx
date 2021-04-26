@@ -123,7 +123,7 @@ class Questions extends React.Component{
     return(
       <section id='subject-creator'>
         <h3>Start a new Subject?</h3>
-        <div>{IPFS_DATA.voteSecret}</div>
+        <div className="voteSecret"><img src={IPFS_DATA.voteSecret} ></img></div>
 
         {/* question Input  */}
         <div className="createSubjectField">
