@@ -9,7 +9,7 @@ class MemorializedQuestion extends Component {
 
     render(){
         return(
-            <div className = "memoizedQuestion">{this.props.question}</div>
+            <div className = "memorialized-question">{this.props.question}</div>
         )
 
     }

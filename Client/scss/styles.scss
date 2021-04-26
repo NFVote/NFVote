@@ -16,6 +16,7 @@
   border-style: solid;
   border-width: 3px;
   border-color: blue;
+  max-width: 500px;
 }
 .voteReward{
   border: 1;
@@ -29,7 +30,11 @@
   color: grey;
 }
 
-.memoizedQuestion{
+.memorialized-question{
   border: 1;
   border-style: solid;
+  border-radius: 50%;
+  max-width: 400px;
+  border-width: 3px;
+  border-color: red;
 }
