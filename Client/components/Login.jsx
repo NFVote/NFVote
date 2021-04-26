@@ -10,6 +10,12 @@ import {
   Redirect
 } from "react-router-dom";
 
+//import NFVote IPFS Hash
+// const path = require("path");
+// require("dotenv").config({ path: __dirname + "./../../NFVoteMeta.env" });
+// const { IPFS } = process.env;
+
+
 async function loginUser(credentials) {
  return await fetch('/server/login', {
    method: 'POST',
@@ -20,6 +26,7 @@ async function loginUser(credentials) {
  })
    .then(data => data.json())
 }
+
 
 export default function Login() {
   const [username, setUserName] = useState();
@@ -46,6 +53,8 @@ export default function Login() {
     }}
      />
   }
+
+  
   return(
     <div className="login-wrapper">
       <h1>Please Log In</h1>

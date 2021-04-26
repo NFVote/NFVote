@@ -15,56 +15,66 @@ class IndividualQuestion extends Component {
 
 	upvoteFunc(){
 		// fetch('/server/vote')
-		if (this.state.hasVoted = false){
+		// if (this.state.hasVoted = false){
 			this.sendVote(1)//to yay column
-			this.setState({
-				hasVoted: true
-			})
-		}
+			// this.setState({
+			// 	hasVoted: true
+			// })
 	}
 	
 	downvoteFunc(){
 		// fetch('/server/vote')   
 			this.sendVote(0)//to nay column
-			if (this.state.hasVoted = false){
-				this.sendVote(1)//to yay column
-				this.setState({
-					hasVoted: true
-				})
-			}
+			// if (this.state.hasVoted = false){
+			// 	this.sendVote(1)//to yay column
+			// 	this.setState({
+			// 		hasVoted: true
+			// 	})
+			// }
 	}
 
-	sendVote(vote){
+	async sendVote(vote){
 		const body = {
 			'vote': vote,
-			'question': this.props.question
+			'question': this.props.question,
+			'ssid': this.props.ssid
 		};
 		// console.log(body)
-		fetch((`/server/voteChange`),{
-			method: 'POST',
-			headers: {
-				'Content-Type': 'Application/JSON'
-			},
-			body: JSON.stringify(body)
+		const sending = await fetch((`/server/voteChange`),{ method: 'POST', headers: { 'Content-Type': 'Application/JSON' }, body: JSON.stringify(body) });
+
+		await fetch('/server/getOneQuestion', { method: 'POST', headers: { 'Content-Type': 'Application/JSON' }, body: JSON.stringify(body) })
+		.then(resp => resp.json()).then(data => {
+			this.setState({
+				upvotes: data.rows[0].votefor,
+				downvotes: data.rows[0].voteagainst
+			})
 		})
+		return sending;
 	}
 
 	render(){
 	//     const { questions } = this.props.question;
-		console.log('rendering individual q', this.props)
+		// console.log('rendering individual q', this.props)
+		const { upvotes } = this.props;
+		const { downvotes } = this.props;
 		return(
 			<div className = "qContainer">
+				{/* Questions */}
 					{this.props.question}
+					
 
-						<br/>
-
+				{/* Votes */}
+				<div className="votes-container">
 					<div>
+							{upvotes}
 							<button className="voteBtn" onClick={this.upvoteFunc.bind(this)}>Upvote</button>
 					</div>
 					<div>
+							{downvotes}
 							<button className="voteBtn" onClick={this.downvoteFunc.bind(this)}>Downvote</button>
 					</div>
-							<br/>
+				</div>
+
 			</div>
 		)
 

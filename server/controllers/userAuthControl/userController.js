@@ -6,7 +6,7 @@ const userController = {};
 
 userController.signUp = (req, res, next) => {
 
-  console.log('userController.signUp:',req.body)
+  // console.log('userController.signUp:',req.body)
 
   const qValues = [
     req.body.email,
@@ -21,7 +21,7 @@ userController.signUp = (req, res, next) => {
 
   db.query(qString, qValues)
     .then(data => {
-      console.log('userController.signUp USER ADDED:',data);
+      // console.log('userController.signUp USER ADDED:',data);
       res.locals.newUser = data.rows[0];
     })
     .then(next)
@@ -51,7 +51,7 @@ userController.logIn = (req, res, next) => {
     // console.log('THIS IS NOW A CALLBACK',data.rows[0]);
     // const passwordCheck = userAuth.CHECK(req.body.password,data.rows[0].hash);
     const passwordCheck = data.rows[0];
-    console.log('passwordCheck after login:', passwordCheck);
+    // console.log('passwordCheck after login:', passwordCheck);
 
     if (passwordCheck) return next();
     else return res.status(200).json({logIn: false})
@@ -84,11 +84,11 @@ userController.addQuestion = (req, res, next) => {
   const insertQString = `INSERT INTO nfquest (userhash, questions, votefor, voteagainst, date_asked, majority)
                           VALUES ($1, $2, 0, 0, $3, FALSE)`;
   //query to post question if previous query response is valid
-  shouldPost=true;
+  // shouldPost=true;
   if(shouldPost) {
     db.query(insertQString, validateUserValues, (err, data) => {
-      console.log('*******IN SHOULD POST DB QUERY ********')
-      console.log(data)
+      // console.log('*******IN SHOULD POST DB QUERY ********')
+      // console.log(data)
       console.log(err)
     })
   }
@@ -99,6 +99,20 @@ userController.addQuestion = (req, res, next) => {
 userController.getQuestions = (req, res, next) => {
   const getQuestionsQuery = 'SELECT * FROM nfquest WHERE date_asked > $1';
   const getQuestionsValues = [Date.now() - (86400 * 1000)];
+  // console.log('getting questions after this millisecond' + getQuestionsValues)
+  // 1619390127991
+  db.query(getQuestionsQuery, getQuestionsValues)
+    .then((data) => {
+      res.locals = data.rows;
+    })
+    .then(() => next());
+
+}
+
+
+userController.getOneQuestion = (req, res, next) => {
+  const getQuestionsQuery = 'SELECT * FROM nfquest WHERE date_asked > $1 AND questions = $2';
+  const getQuestionsValues = [Date.now() - (86400 * 1000), req.body.question];
   console.log('getting questions after this millisecond' + getQuestionsValues)
   // 1619390127991
   db.query(getQuestionsQuery, getQuestionsValues)
@@ -115,17 +129,39 @@ userController.getMemoQuestions = (req, res, next) => {
   db.query(getQuestionsQuery)
     .then((data) => {
       res.locals = data.rows;
-      console.log(res.locals)
-      console.log('data response from sql' + data.rows)
+      // console.log(res.locals)
+      // console.log('data response from sql' + data.rows)
     })
     .then(() => next());
 
 }
 
 
+userController.insertHistory = async (req, res, next) => {
+  let hasVoted;
+  const checkHistory = [req.body.question, req.body.ssid]
+  const checkHistoryQuery = 'SELECT * FROM questions_history WHERE question = $1 AND user_hash = $2'
+  await db.query(checkHistoryQuery, checkHistory)
+    .then((data) => {
+      hasVoted = data.rows[0]
+      console.log(hasVoted)
+    })
+
+  console.log('after question check, hasVoted = ' + hasVoted)
+  const insertArray = [req.body.question, req.body.ssid]
+  const insertQuestionQuery = 'insert into questions_history(user_hash, question) values ($2, $1)'
+  if(hasVoted === undefined){
+    console.log('letting user vote and updating the history table')
+    db.query(insertQuestionQuery, insertArray, (err, data) => {
+      console.log('inserted question that is valid and user can now upvote')
+      return next();
+    })
+  }
+}
+
+
 userController.recordVote = async (req, res, next) => {
-  console.log('************RECORD VOTE*****************')
-  
+
   const inputVote = req.body.vote;
   const question = req.body.question;
   let queriedData = {};
@@ -140,7 +176,7 @@ userController.recordVote = async (req, res, next) => {
     })
   
 
-  console.log(`***** Record Vote Quereied Data:`, queriedData);
+  // console.log(`***** Record Vote Quereied Data:`, queriedData);
 
   
   let updateVoteString = ``;
@@ -161,7 +197,7 @@ userController.recordVote = async (req, res, next) => {
   }; 
 
   db.query(updateVoteString, voteValues, (err,data) => {
-    console.log('******** VOTE RECORDED IN MIDDLEWARE *********')
+    // console.log('******** VOTE RECORDED IN MIDDLEWARE *********')
   })
 
   next();
