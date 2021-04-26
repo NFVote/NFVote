@@ -44,10 +44,11 @@ class IndividualQuestion extends Component {
 		// console.log(body)
 		const sending = await fetch((`/server/voteChange`),{ method: 'POST', headers: { 'Content-Type': 'Application/JSON' }, body: JSON.stringify(body) });
 
-		const votes = await fetch('/server/getQuestions', { method: 'GET' }).then(resp => resp.json()).then(data => {
+		await fetch('/server/getOneQuestion', { method: 'POST', headers: { 'Content-Type': 'Application/JSON' }, body: JSON.stringify(body) })
+		.then(resp => resp.json()).then(data => {
 			this.setState({
-				upvotes: 
-				downvotes: 
+				upvotes: data.rows[0].votefor,
+				downvotes: data.rows[0].voteagainst
 			})
 		})
 		return sending;
@@ -55,7 +56,9 @@ class IndividualQuestion extends Component {
 
 	render(){
 	//     const { questions } = this.props.question;
-		console.log('rendering individual q', this.props)
+		// console.log('rendering individual q', this.props)
+		const { upvotes } = this.props;
+		const { downvotes } = this.props;
 		return(
 			<div className = "qContainer">
 				{/* Questions */}
@@ -65,11 +68,11 @@ class IndividualQuestion extends Component {
 				{/* Votes */}
 				<div className="votes-container">
 					<div>
-							{this.state.upvotes}
+							{upvotes}
 							<button className="voteBtn" onClick={this.upvoteFunc.bind(this)}>Upvote</button>
 					</div>
 					<div>
-							{this.state.downvotes}
+							{downvotes}
 							<button className="voteBtn" onClick={this.downvoteFunc.bind(this)}>Downvote</button>
 					</div>
 				</div>
