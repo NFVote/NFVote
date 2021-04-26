@@ -37,14 +37,19 @@ class Memo extends Component {
         let memoquestions = [];
         for (let i = 0; i < this.state.memoQuestions.length; i++){
             //add in props to the questions
-            memoquestions.push(<MemorializedQuestion question={this.state.memoQuestions[i].questions} />);
+            memoquestions.push(<MemorializedQuestion 
+                question={this.state.memoQuestions[i].questions} 
+                upvote={this.state.memoQuestions[i].votefor} 
+                downvote={this.state.memoQuestions[i].voteagainst}
+                 />);
         }
 
         return(
             <div>
                 {/* Link back to questions */}
-                <div>
-                    <Link to="/questions"><button id="questionsRouter" type="button">Questions</button></Link>
+                <div className="memoHeaderContainer">
+                    <h1 className="memoHeader">Memorialized</h1>
+                    <Link to="/questions"><button className="questionsRouter" type="button">Back to Questions</button></Link>
                 </div>
 
                 {/* Memorialized questions */}

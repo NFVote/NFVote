@@ -9,7 +9,15 @@ class MemorializedQuestion extends Component {
 
     render(){
         return(
-            <div className = "memorialized-question">{this.props.question}</div>
+            <div>
+                <div className = "memorialized-question">
+                {this.props.question}
+                    <div className = "memoVotes">
+                        <div className = "memoVotes">Votes for: {this.props.upvote}</div>
+                        <div className = "memoVotes">Votes against: {this.props.downvote}</div>
+                    </div>
+                </div>
+            </div>
         )
 
     }

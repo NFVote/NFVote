@@ -1,40 +1,288 @@
-.qContainer{
-  color: black;
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Abril+Fatface');
+@import url('https://fonts.googleapis.com/css2?family=Courgette&display=swap');
+
+
+
+//LOGIN STYLING
+.AppComponent{
   display: flex;
+  align-items: center;
   flex-direction: column;
-
-  margin: 1% 0%;
+}
+.header{
+  font-family: 'Noto Sans TC';
 }
 
-.voteBtn{
-  color: blue;
-  margin-left: 20px;
+body{
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background: linear-gradient(to right, rgba(72, 89, 185, 0.514), #b94848, rgba(77, 75, 182, 0.541));
+  opacity: 0.95;
 }
+
+.login-wrapper{
+  background-image: url("https://images.fineartamerica.com/images-medium-large-5/1930s-1940s-mans-hand-putting-ballot-vintage-images.jpg");
+  background-size: cover;
+  background-position: 50%;
+  // background-repeat: no-repeat;
+  font-family: 'Courgette', cursive;
+  font-size: 40px;
+  width: 500px;
+  padding: 40px;
+  top: 50%;
+  left: 50%;
+  // background: white;
+  text-align: center;
+  transition: 0.25s;
+  margin-top: 100px;
+  color: white;
+  border-radius: 7%;
+
+}
+
+.login-title{
+  -webkit-text-stroke: 1px rgb(36, 0, 0);
+}
+
+.loginSubmit{
+  background-image: linear-gradient(to right, #b94848, rgb(82, 79, 255), #0400f98a);
+  border-radius: 5px;
+  width: 100px;
+  height: 50px;
+  font-size: 20px;
+  margin-top: 10px;
+  color: white;
+}
+
+.loginSubmit:hover{
+  cursor: pointer;
+  background-image: linear-gradient(to right, #0400f98a, rgb(82, 79, 255), #b94848);
+  transition: 0.3s;
+}
+
+.login-input{
+  border: 0;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid rgb(255, 255, 255);
+  padding: 10px 10px;
+  width: 250px;
+  outline: none;
+  color: white;
+  border-radius: 24px;
+  font-size: 20px;
+}
+
+
+.login-input input[type="text"]:hover,
+.login-input input[type="password"]:hover {
+    width: 300px;
+    border-color: #cc2e2eb7;
+    background: white;
+}
+
+
+.subjectStart {
+  display: grid;
+  color: white;
+  font-size:100px;
+  font-family: 'Abril Fatface';
+  justify-items: center;
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+
+.subjectStartFont {
+  margin-bottom: 0px;
+  margin-top:0px;
+}
+//contains question, buttons, vote counts
+
+.divider {
+  display:grid;
+  justify-items: center;
+
+}
+
+//upvote downvote button
+.createSubjectField {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.newQuestionsBtns {
+  display:flex;
+  justify-content: center;
+  align-items:center;
+
+}
+
+
+.textinput{
+  padding: 10px 20px;
+  box-sizing: border-box;
+  border-radius: 20px;
+}
+
+//image of NFT
 
 .voteSecret{
+  display: grid;
   border: 1;
-  border-style: solid;
-  border-width: 3px;
-  border-color: blue;
-  max-width: 500px;
+  border-style: dashed;
+  border-width: 10px;
+  border-color: white;
+  max-width: 1000px;
+  margin-top: 0px;
 }
 .voteReward{
   border: 1;
   border-style: solid;
   border-width: 3px;
-  border-color: green;
+
 }
 
+
+.voteBtn{
+  color: whitesmoke;
+  background-color: navy;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  justify-content: center;
+  align-content: center;
+  border-radius: 3px;
+  border-width: 0;
+  padding: 5px;
+  font-family: "Abril Fatface";
+}
+.voteBtn:hover{
+  cursor: pointer;
+  background-color: whitesmoke;
+  color: navy;
+  transition: 0.3s;
+}
+
+.upVoteCount{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+
+.downVoteCount{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+.questions-display-container {
+  display: grid;
+  border: 1;
+  grid-template-columns: 1fr 1fr;
+}
+
+.qContainer{
+  color: black;
+  display: flex;
+  flex-direction: column;
+  font-family: "Abril Fatface";
+  font-size: 1.25em;
+  margin: 5% 5%;
+  
+}
 .votes-container{
   // display: block;
-  color: grey;
+  // color:navy;
+  border-style: solid;
+  border-radius: 5px;
+  border-color: #dddddd;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+
+}
+
+.questionBeingAsked{
+  color: navy;
+}
+.questionAndVote{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+
+//MEMORIALIZED QUESTIONS PAGE
+
+.memoHeaderContainer{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  .memoHeader{
+    font-family: 'Noto Sans TC';
+    font-size: 100px;
+    color: white;
+    margin-bottom: 10px;
+  }
+
+}
+
+.questionsRouter{
+  color: whitesmoke;
+  background-color: navy;
+  border-radius: 5px;
+  border-style: solid;
+  border-width: 0px;
+  width: 150px;
+  height: 60px;
+  font-size: 15px;
+  margin: 20px;
+  font-family: 'Abril Fatface';
+}
+
+.questionsRouter:hover{
+  cursor: pointer;
+  background-color: whitesmoke;
+  color: navy;
+  transition: 0.3s;
 }
 
 .memorialized-question{
-  border: 1;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  font-family: 'Noto Sans TC';
+  font-size: 30px;
+  background-color: rgb(249, 237, 223);
+  text-shadow: 1px 1px 1px red,
+               1px 1px 1px red;
+  margin-top: 10px;
+  padding: 7px;
   border-style: solid;
-  border-radius: 50%;
-  max-width: 400px;
+  border-radius: 5px;
+  max-width: 100%;
   border-width: 3px;
-  border-color: red;
+}
+
+.memoVotes{
+  font-size: 15px;
+  display: flex;
+  justify-content: space-evenly;
+  text-shadow: none;
+  margin: 0px 10px 0px 10px;
 }
