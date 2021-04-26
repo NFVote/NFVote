@@ -52,6 +52,7 @@ class Questions extends React.Component{
         })
         .catch(err => console.log(' ERROR: ', err));
     }
+    this.setState({question: ''})
   };
 
   handleChange(event) {
@@ -71,7 +72,7 @@ class Questions extends React.Component{
       .then(data => {
           questionsResponse = data;
           for (let i=0; i<questionsResponse.length; i+=1){
-            questions.push(<IndividualQuestion question={questionsResponse[i].questions}/>);
+            questions.push(<IndividualQuestion question={questionsResponse[i].questions} ssid={Cookies.get('ssid')}/>);
             // questions.push(questionsResponse[i].questions)
           }
           this.setState({questionArray: questions})
@@ -105,10 +106,10 @@ class Questions extends React.Component{
           <textarea rows="4" cols="50" name="question" placeholder="First steps..." value={this.state.question} onChange={this.handleChange} />
           {this.state.questionError ? (<span className="errorMsg">{this.state.questionError}</span>) : null}
         </div>
-
+        <Link to="/memo"><button id="memoRouter" type="button">Memorialized Questions</button></Link>
         {/* Submit Buttons  */}
         <div className="createSubContainer">
-          <button type="button" className="btnMain" onClick={this.saveSubject}>Save</button>
+          <button type="button" className="btnMain" onClick={this.fetchQuestions}>Save</button>
           {/* <Link to="/" className="backLink">
             <button type="button" className="btnSecondary">
               Cancel

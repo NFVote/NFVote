@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import React, { useState } from 'react';
+import { Link, withRouter } from 'react-router-dom';
 import MemorializedQuestion from './MemorializedQuestion.jsx'
 
 
@@ -12,7 +13,7 @@ class Memo extends Component {
     }
 
     componentDidMount() {
-        fetch('/api/memoquestions') // this will be fetch request to table of memoized questions
+        fetch('/server/memoquestions') // this will be fetch request to table of memoized questions
         .then((res) => res.json())
         .then((response) => {
             //setstate to response from the request
@@ -32,9 +33,9 @@ class Memo extends Component {
 
     render(){
         let memoquestions = [];
-        for (let i = 0; i<this.state.memoQuestions.length; i++){
+        for (let i = 0; i < this.state.memoQuestions.length; i++){
             //add in props to the questions
-            memoquestions.push(<MemorializedQuestion question={this.state.memoQuestions[i]} />);n
+            memoquestions.push(<MemorializedQuestion question={this.state.memoQuestions[i].questions} />);
         }
 
         return(
@@ -46,4 +47,4 @@ class Memo extends Component {
 
 }
 
-export default Memo;
+export default withRouter(Memo);
