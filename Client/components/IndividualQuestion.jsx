@@ -55,16 +55,18 @@ class IndividualQuestion extends Component {
 		return(
 			<div className = "qContainer">
 					{this.props.question}
-
-						<br/>
+					
+						{/* <br>{"\n"}</br> */}
 
 					<div>
+							{this.props.upvotes}
 							<button className="voteBtn" onClick={this.upvoteFunc.bind(this)}>Upvote</button>
 					</div>
 					<div>
+							{this.props.downvotes}
 							<button className="voteBtn" onClick={this.downvoteFunc.bind(this)}>Downvote</button>
 					</div>
-							<br/>
+						{/* <br>{"\n"}</br> */}
 			</div>
 		)
 

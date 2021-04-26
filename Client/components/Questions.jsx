@@ -71,8 +71,14 @@ class Questions extends React.Component{
       .then(resp => resp.json())
       .then(data => {
           questionsResponse = data;
+          console.log(questionsResponse[0])
           for (let i=0; i<questionsResponse.length; i+=1){
-            questions.push(<IndividualQuestion question={questionsResponse[i].questions} ssid={Cookies.get('ssid')}/>);
+            questions.push(<IndividualQuestion 
+              question={questionsResponse[i].questions} 
+              upvotes={questionsResponse[i].votefor}
+              downvotes={questionsResponse[i].voteagainst}
+              ssid={Cookies.get('ssid')}/>
+              );
             // questions.push(questionsResponse[i].questions)
           }
           this.setState({questionArray: questions})
