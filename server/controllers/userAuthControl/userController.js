@@ -31,6 +31,7 @@ userController.signUp = (req, res, next) => {
     }))
 }
 
+
 userController.logIn = (req, res, next) => {
 
   // console.log('userController.logIn', req.body);
@@ -71,10 +72,10 @@ userController.addQuestion = (req, res, next) => {
       FROM nfquest
   )`
   db.query(validateUserQuery, valueSSID, (err, data) => {
-    console.log(data.rows);
-    console.log(data.rows[0].date_asked);
-    console.log(Date.now());
-    console.log((data.rows[0].date_asked*1000 + (86400*1000)) < Date.now());
+    // console.log(data.rows);
+    // console.log(data.rows[0].date_asked);
+    // console.log(Date.now());
+    // console.log((data.rows[0].date_asked*1000 + (86400*1000)) < Date.now());
     if((data.rows[0].date_asked + (86400 * 1000)) < Date.now()){
       console.log('flagging valid questions')
       shouldPost = true;
@@ -94,14 +95,76 @@ userController.addQuestion = (req, res, next) => {
   return next();
 }
 
+
 userController.getQuestions = (req, res, next) => {
-  const getQuestionsQuery = 'SELECT * FROM nfquest';
-  // const getQuestionsValues = [Date.now()];
-  db.query(getQuestionsQuery)
+  const getQuestionsQuery = 'SELECT * FROM nfquest WHERE date_asked > $1';
+  const getQuestionsValues = [Date.now() - (86400 * 1000)];
+  console.log('getting questions after this millisecond' + getQuestionsValues)
+  // 1619390127991
+  db.query(getQuestionsQuery, getQuestionsValues)
     .then((data) => {
       res.locals = data.rows;
     })
     .then(() => next());
+
+}
+
+
+userController.getMemoQuestions = (req, res, next) => {
+  const getQuestionsQuery = 'SELECT * FROM nfquest WHERE majority = True';
+  db.query(getQuestionsQuery)
+    .then((data) => {
+      res.locals = data.rows;
+      console.log(res.locals)
+      console.log('data response from sql' + data.rows)
+    })
+    .then(() => next());
+
+}
+
+
+userController.recordVote = async (req, res, next) => {
+  console.log('************RECORD VOTE*****************')
+  
+  const inputVote = req.body.vote;
+  const question = req.body.question;
+  let queriedData = {};
+
+
+  const questCheck = [question];
+  const checkQString = `SELECT * FROM nfquest WHERE questions = $1`;
+  await db.query(checkQString, questCheck)
+    .then((data) => {
+
+      queriedData = data.rows[0];
+    })
+  
+
+  console.log(`***** Record Vote Quereied Data:`, queriedData);
+
+  
+  let updateVoteString = ``;
+  let voteValues = [];
+  let newVote;
+  let majority = false;
+  // console.log(queriedData)
+  if (inputVote ===1) {
+    updateVoteString = `UPDATE nfquest SET votefor = $1, majority = $3 WHERE questions = $2`;
+    newVote = queriedData.votefor+1;
+    majority = newVote > 3 ? true : false;
+    voteValues = [newVote, question, majority];
+  } else {
+    updateVoteString = `UPDATE nfquest SET voteagainst = $1, majority = $3 WHERE questions = $2`;
+    newVote = queriedData.voteagainst+1;
+    majority = newVote > 3 ? true : false;
+    voteValues = [newVote ,question, majority];
+  }; 
+
+  db.query(updateVoteString, voteValues, (err,data) => {
+    console.log('******** VOTE RECORDED IN MIDDLEWARE *********')
+  })
+
+  next();
 
 }
 

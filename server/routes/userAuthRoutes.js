@@ -12,6 +12,7 @@ userAuthRouter.get('/', (req,res) => {
   return res.status(200).send(welcomeToUserAuth);
 })
 
+
 userAuthRouter.post(
   '/signUp',
   userController.signUp,
@@ -43,6 +44,7 @@ userAuthRouter.post(
   }
 )
 
+
 //get all questions routes
 userAuthRouter.get(
   '/getQuestions',
@@ -52,6 +54,28 @@ userAuthRouter.get(
     return res.status(200).json(res.locals)
   }
 )
+
+
+//get all questions routes
+userAuthRouter.get(
+  '/memoquestions',
+  userController.getMemoQuestions,
+  (req,res) => {
+    console.log('***Questions middleware executed and responded***')
+    return res.status(200).json(res.locals)
+  }
+)
+
+
+userAuthRouter.post(
+  '/voteChange',
+  userController.recordVote,
+  (req,res) => {
+    console.log('*** VOTE RECORDERD ***');
+    return res.status(200).json({voteRecorded: true});
+  }
+)
+
 
 //add more toures below
 
