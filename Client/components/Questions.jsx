@@ -122,29 +122,31 @@ class Questions extends React.Component{
     // console.log('questionArray:',this.state.questionArray);
     return(
       <section id='subject-creator'>
-        <h3>Start a new Subject?</h3>
+        <div className="homepageHeader">
+        <div className="subjectStart"><h3 className="subjectStartFont">Start A New Poll</h3></div>
         <div className="voteSecret"><img src={IPFS_DATA.voteSecret} ></img></div>
-
+        </div>
+        <div><h3>    </h3></div>
         {/* question Input  */}
         <div className="createSubjectField">
-          <label htmlFor="question">Question: </label>
+          <label htmlFor="question"></label>
           <br/>
-          <textarea rows="4" cols="50" name="question" placeholder="First steps..." value={this.state.question} onChange={this.handleChange} />
+          <textarea className="textinput" rows="4" cols="50" name="question" placeholder="An opinion for thought..." value={this.state.question} onChange={this.handleChange} />
           {this.state.questionError ? (<span className="errorMsg">{this.state.questionError}</span>) : null}
         </div>
 
+        <div className="newQuestionsBtns">
         {/* Memorialized Button */}
-        <Link to="/memo"><button id="memoRouter" type="button">Memorialized Questions</button></Link>
+        <div className="createSubContainer">
+          <button type="button" className="questionsRouter" onClick={this.saveSubject}>Save</button>
+        </div>
+        <Link to="/memo"><button className="questionsRouter" type="button">Memorialized Questions</button></Link>
 
         {/* Submit Buttons  */}
-        <div className="createSubContainer">
-          <button type="button" className="btnMain" onClick={this.saveSubject}>Save</button>
-          {/* <Link to="/" className="backLink">
-            <button type="button" className="btnSecondary">
-              Cancel
-            </button>
-          </Link> */}
+
         </div>
+        <hr/>
+        {/* <div className="divider"><h3>~~         ~~~         ~~</h3></div> */}
 
         <div className="questions-display-container">
           {this.state.questionArray}

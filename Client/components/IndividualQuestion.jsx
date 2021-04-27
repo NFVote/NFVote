@@ -76,32 +76,39 @@ class IndividualQuestion extends Component {
 		// console.log('rendering individual q', this.props)
 		// const { upvotes } = this.state;
 		// const { downvotes } = this.state;
-		return(
-			<div className = "qContainer">
-				{/* Questions */}
-					{this.props.question}
-					
+		return (
+      <div className="qContainer">
+        {/* Questions */}
 
-				{/* Votes */}
-				<div className="votes-container">
-					<div>
-							{this.state.upvotes}
-							<button className="voteBtn" onClick={() => {
-												this.upvoteFunc();
-												this.refresh();
-												}}>Upvote</button>
-					</div>
-					<div>
-							{this.state.downvotes}
-							<button className="voteBtn" onClick={() => {
-												this.downvoteFunc();
-												this.refresh();
-												}}>Downvote</button>
-					</div>
+        {/* Votes */}
+        <div className="votes-container">
+		<div>
+        <div className="questionBeingAsked">{this.props.question.trim()}</div>
+            <div className="questionAndVote">
+				<div className="Upvote">
+					<p className="upVoteCount">{this.state.upvotes}</p>
+					<button
+						className="voteBtn"
+						onClick={() => {
+						this.upvoteFunc();
+						this.refresh();
+						}}
+					>Upvote</button>
 				</div>
-
-			</div>
-		)
+				<div className="Downvote">
+					<p className="downVoteCount">{this.state.downvotes}</p>
+					<button
+					className="voteBtn"
+					onClick={() => {
+						this.downvoteFunc();
+						this.refresh();
+					}}>Downvote</button>
+				</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
 
 	}
 
